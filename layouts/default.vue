@@ -1,9 +1,28 @@
 <script lang="ts" setup>
-console.log("loaded");
+import { account } from "@/lib/appwrite";
+import { useAuthStore, useIsLoadingStore } from "@/store/auth.store";
+import { Layout } from "lucide-vue-next";
+import { onMounted } from "vue";
+import { useRouter } from "vue-router";
+
+const store = useAuthStore();
+const router = useRouter();
+
+onMounted(async () => {
+  try {
+    const user = await account.get();
+    if (user) store.set(user);
+  } catch (error) {
+    router.push("/login");
+  } finally {
+    useIsLoadingStore().set(false);
+  }
+});
 </script>
 
 <template>
-  <section class="grid" style="min-height: 100vh">
+  <LayoutLoader v-if="useIsLoadingStore().isLoading" />
+  <section v-else class="grid" style="min-height: 100vh">
     <LayoutSidebar />
     <div>
       <slot />
