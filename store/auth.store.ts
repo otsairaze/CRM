@@ -32,7 +32,7 @@ export const useAuthStore = defineStore("auth", {
 
 export const useIsLoadingStore = defineStore("isLoading", {
   state: () => ({
-    isLoading: false,
+    isLoading: true,
   }),
   actions: {
     set(data: boolean) {
